@@ -29,6 +29,7 @@ import pascal.taie.analysis.dataflow.DataflowTestSuite;
 import pascal.taie.analysis.deadcode.DeadCodeTestFull;
 import pascal.taie.analysis.defuse.DefUseTest;
 import pascal.taie.analysis.graph.callgraph.cha.CHATestFull;
+import pascal.taie.analysis.ifds.IFDSTestSuite;
 import pascal.taie.analysis.pta.PTATestSuite;
 import pascal.taie.analysis.sideeffect.SideEffectTest;
 import pascal.taie.config.OptionsTest;
@@ -60,6 +61,7 @@ import pascal.taie.util.UtilTestSuite;
         CHATestFull.class,
         PTATestSuite.class,
         SideEffectTest.class,
+        IFDSTestSuite.class,
         // util
         OptionsTest.class,
         UtilTestSuite.class,
