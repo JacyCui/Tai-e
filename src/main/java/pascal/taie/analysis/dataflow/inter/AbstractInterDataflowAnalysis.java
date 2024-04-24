@@ -37,7 +37,7 @@ import pascal.taie.config.AnalysisConfig;
 /**
  * Provides common functionalities for {@link InterDataflowAnalysis} implementations.
  *
- * @param <Method> type of ICFG edges
+ * @param <Method> type of program methods
  * @param <Node>   type of ICFG nodes
  * @param <Fact>   type of data-flow facts
  */
