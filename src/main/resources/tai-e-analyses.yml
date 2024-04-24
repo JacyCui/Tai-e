@@ -123,6 +123,11 @@
     edge-refine: true # refine lattice value via edge transfer
     alias-aware: false # leverage alias information to improve precision
 
+- description: ifds possible uninitialized variables
+  analysisClass: pascal.taie.analysis.ifds.analysis.IFDSUninitializedVariables
+  id: ifds-uninit-var
+  requires: [ icfg ]
+
 - description: dead code detection
   analysisClass: pascal.taie.analysis.deadcode.DeadCodeDetection
   id: dead-code
