@@ -133,7 +133,7 @@ public class IFDSUninitializedVariables extends AbstractIFDSProblem<Stmt, Var, J
     @Override
     protected FlowFunction<Var> getReturnFlowFunction(ReturnEdge<Stmt> edge) {
         if (edge.getReturnVars().isEmpty()) {
-            return FlowFunctions.killAll();
+            return FlowFunctions.empty();
         }
         return edge.getCallSite().getDef()
                 .filter(lv -> lv instanceof Var)
@@ -143,7 +143,7 @@ public class IFDSUninitializedVariables extends AbstractIFDSProblem<Stmt, Var, J
                     }
                     return Collections.emptySet();
                 }))
-                .orElse(FlowFunctions.killAll());
+                .orElse(FlowFunctions.empty());
     }
 
 }

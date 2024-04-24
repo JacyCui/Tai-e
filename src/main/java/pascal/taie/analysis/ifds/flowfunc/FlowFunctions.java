@@ -43,31 +43,82 @@ public final class FlowFunctions {
     }
 
     /**
-     * Makes a flow function that kills a single item.
-     *
-     * @param killed the item to be killed
-     * @return the flow function that kills {@code killed} and preserves other items
+     * @return the empty flow function that kills all items in a dataflow fact.
      */
-    public static <Item> FlowFunction<Item> kill(Item killed) {
-        return item -> item.equals(killed) ?
-                Collections.emptySet() : Collections.singleton(item);
-    }
-
-    /**
-     * @return the flow function that kills all items in a dataflow fact.
-     */
-    public static <Item> FlowFunction<Item> killAll() {
+    public static <Item> FlowFunction<Item> empty() {
         return item -> Collections.emptySet();
     }
 
     /**
-     * Makes a flow function by composing several other flow functions.
+     * Makes a flow function that kills a single item.
+     *
+     * @param killItem the item to be killed
+     * @return the flow function that kills {@code killItem} and preserves other items
+     */
+    public static <Item> FlowFunction<Item> kill(Item killItem) {
+        return item -> item.equals(killItem) ?
+                Collections.emptySet() : Collections.singleton(item);
+    }
+
+    /**
+     * Makes a flow function that generates a single item.
+     *
+     * @param genItem the item to be generated
+     * @param zeroItem the special zero item in the representative relation
+     * @return the flow function that generates {@code genItem} and preserves other items
+     */
+    public static <Item> FlowFunction<Item> gen(Item genItem, Item zeroItem) {
+        return item -> item.equals(zeroItem) ?
+                twoElementSet(item, genItem) : Collections.singleton(item);
+    }
+
+    /**
+     * Makes a flow function that transfers dataflow.
+     *
+     * @param fromItem the dataflow source item
+     * @param toItem the item whose driver will be changed to {@code fromItem}
+     * @return the flow function that drives {@code toItem} using {@code fromItem}
+     * instead of itself
+     */
+    public static <Item> FlowFunction<Item> transfer(Item fromItem, Item toItem) {
+        return item -> {
+          if (item.equals(fromItem)) {
+              return twoElementSet(item, toItem);
+          }
+          if (item.equals(toItem)) {
+              return Collections.emptySet();
+          }
+          return Collections.singleton(item);
+        };
+    }
+
+    /**
+     * Makes a new flow function representing the union of several other flow functions.
+     *
+     * @param funcs the flow functions to union
+     * @return the union flow function of {@code funcs}
+     */
+    @SafeVarargs
+    public static <Item> FlowFunction<Item> union(FlowFunction<Item>... funcs) {
+        if (funcs.length == 0) {
+            return empty();
+        }
+        if (funcs.length == 1) {
+            return funcs[0];
+        }
+        return item -> Arrays.stream(funcs)
+                .flatMap(f -> f.getTargets(item).stream())
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * Makes a new flow function by composing several other flow functions.
      *
      * @param funcs the flow functions to be composed
      * @return the composed flow function that applies {@code funcs} in order,
      * identity if {@code funcs} is empty
      */
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     public static <Item> FlowFunction<Item> compose(FlowFunction<Item>... funcs) {
         List<FlowFunction<Item>> list = Arrays.stream(funcs)
                 .filter(f -> f != identity()).toList();
@@ -77,7 +128,7 @@ public final class FlowFunctions {
             return list.get(0);
         } else {
             return item -> {
-                Set<Item> result = Sets.newSet();
+                Set<Item> result = Sets.newHybridSet();
                 result.add(item);
                 for (FlowFunction<Item> f : list) {
                     result = result.stream()
@@ -87,6 +138,17 @@ public final class FlowFunctions {
                 return Collections.unmodifiableSet(result);
             };
         }
+    }
+
+    /**
+     * @return an unmodifiable set containing {@code e1} and {@code e2}
+     * where {@code e1 == e2} is allowed
+     */
+    static <Item> Set<Item> twoElementSet(Item e1, Item e2) {
+        Set<Item> res = Sets.newSmallSet();
+        res.add(e1);
+        res.add(e2);
+        return Collections.unmodifiableSet(res);
     }
 
 }
