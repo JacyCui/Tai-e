@@ -51,7 +51,7 @@ public class IFDSUninitializedVariables extends AbstractIFDSProblem<Stmt, Var, J
 
     public static final String ID = "ifds-uninit-var";
 
-    protected IFDSUninitializedVariables(AnalysisConfig config) {
+    public IFDSUninitializedVariables(AnalysisConfig config) {
         super(config);
     }
 
