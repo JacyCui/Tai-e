@@ -1,0 +1,18 @@
+-------------------- <Example: void main(java.lang.String[])> (ifds-uninit-var) --------------------
+[0@L10] x = 0; [<<zero>>, x]
+[1@L11] invokestatic <Example: void P(int)>(x); [<<zero>>]
+[2@L11] return; [<<zero>>]
+
+-------------------- <Example: void P(int)> (ifds-uninit-var) --------------------
+[0@L15] %intconst0 = 0; [<<zero>>]
+[1@L15] if (a > %intconst0) goto 3; [<<zero>>]
+[2@L15] goto 9; [<<zero>>]
+[3@L15] nop; [<<zero>>]
+[4@L16] temp$0 = 0; [<<zero>>]
+[5@L16] <Example: int g> = temp$0; [<<zero>>]
+[6@L17] temp$1 = <Example: int g>; [<<zero>>]
+[7@L17] a = a - temp$1; [<<zero>>]
+[8@L18] invokestatic <Example: void P(int)>(a); [<<zero>>]
+[9@L18] nop; [<<zero>>]
+[10@L18] return; [<<zero>>]
+
