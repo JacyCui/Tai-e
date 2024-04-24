@@ -35,9 +35,10 @@ public interface IFDSSolver<Node, Item, Method> {
 
     /**
      * The default solver.
+     * TODO: make this {@link DefaultIFDSSolver} after you implement it.
      */
     @SuppressWarnings("rawtypes")
-    IFDSSolver SOLVER = new DefaultIFDSSolver<>();
+    IFDSSolver SOLVER = new DummyIFDSSolver();
 
     /**
      * Static factory method for obtaining a solver.

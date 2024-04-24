@@ -24,6 +24,7 @@ package pascal.taie.analysis.ifds.solver;
 
 import pascal.taie.analysis.dataflow.fact.DataflowResult;
 import pascal.taie.analysis.dataflow.fact.SetFact;
+import pascal.taie.ir.stmt.Stmt;
 
 /**
  * An IFDS result is a dataflow result with set facts.
@@ -33,4 +34,9 @@ import pascal.taie.analysis.dataflow.fact.SetFact;
  */
 public class IFDSResult<Node, Item> extends DataflowResult<Node, SetFact<Item>> {
 
+    @Override
+    public SetFact<Item> getResult(Stmt stmt) {
+        return getInFact((Node) stmt);
+    }
+    
 }
