@@ -24,11 +24,13 @@ package pascal.taie.analysis.ifds;
 
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
+import pascal.taie.analysis.ifds.analysis.IFDSUninitVarTest;
 import pascal.taie.analysis.ifds.flowfunc.FlowFunctionTest;
 
 @Suite
 @SelectClasses({
-        FlowFunctionTest.class
+        FlowFunctionTest.class,
+        IFDSUninitVarTest.class
 })
 public class IFDSTestSuite {
 }
