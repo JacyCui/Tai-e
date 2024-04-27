@@ -39,7 +39,7 @@ public class DefaultIFDSSolver<Node, Item, Method> extends AbstractIFDSSolver<No
         //      and you can move some common functionalities to AbstractIFDSSolver
         //      because we may also implement a concurrent version later.
         //      You could change IFDSResult if want, but please discuss it with me first.
-        return new IFDSResult<>();
+        return new IFDSResult<>(problem.isForward());
     }
 
 }

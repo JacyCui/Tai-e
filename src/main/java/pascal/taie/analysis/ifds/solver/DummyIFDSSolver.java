@@ -17,7 +17,7 @@ public class DummyIFDSSolver<Node, Item, Method> extends AbstractIFDSSolver<Node
 
     @Override
     public IFDSResult<Node, Item> solve(IFDSProblem<Node, Item, Method> problem) {
-        IFDSResult<Node, Item> result = new IFDSResult<>();
+        IFDSResult<Node, Item> result = new IFDSResult<>(problem.isForward());
         ICFG<Method, Node> icfg = problem.getICFG();
         icfg.getNodes().forEach(node -> {
             icfg.getInEdgesOf(node).forEach(edge -> {

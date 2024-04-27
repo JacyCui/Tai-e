@@ -25,6 +25,9 @@ package pascal.taie.analysis.ifds.solver;
 import pascal.taie.analysis.dataflow.fact.DataflowResult;
 import pascal.taie.analysis.dataflow.fact.SetFact;
 import pascal.taie.ir.stmt.Stmt;
+import pascal.taie.util.collection.Maps;
+
+import java.util.Map;
 
 /**
  * An IFDS result is a dataflow result with set facts.
@@ -34,9 +37,33 @@ import pascal.taie.ir.stmt.Stmt;
  */
 public class IFDSResult<Node, Item> extends DataflowResult<Node, SetFact<Item>> {
 
+    private final boolean isForward;
+
+    public IFDSResult(boolean isForward,
+                      Map<Node, SetFact<Item>> inFacts,
+                      Map<Node, SetFact<Item>> outFacts) {
+        super(inFacts, outFacts);
+        this.isForward = isForward;
+    }
+
+    public IFDSResult(boolean isForward) {
+        this(isForward, Maps.newLinkedHashMap(), Maps.newLinkedHashMap());
+    }
+
+    public IFDSResult() {
+        this(true, Maps.newLinkedHashMap(), Maps.newLinkedHashMap());
+    }
+
+    /**
+     * @return whether this is the result of a forward ifds analysis
+     */
+    public boolean isForward() {
+        return isForward;
+    }
+
     @Override
     public SetFact<Item> getResult(Stmt stmt) {
-        return getInFact((Node) stmt);
+        return isForward ? getInFact((Node) stmt) : getOutFact((Node) stmt);
     }
-    
+
 }
